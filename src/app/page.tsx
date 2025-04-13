@@ -1,16 +1,24 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import ProductGrid from "@/components/product-grid";
 import { mockProducts } from "@/components/mock-products";
+import useUserData from "@/hook/useUserData";
+import { handleLogout } from "./login/logout";
+import { supabase } from "@/lib/supabaseClient";
+import { useRouter } from 'next/navigation'
+
 
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<typeof mockProducts>([]);
   const [hasSearched, setHasSearched] = useState(false);
+  const user = useUserData() // obtener el usuario autenticado
+  const router = useRouter()
+
 
   const handleSearch = () => {
     if (!searchQuery.trim()) {
@@ -30,8 +38,25 @@ export default function Home() {
     setHasSearched(true);
   };
 
+  const LogOut = async () => {
+
+    const { error } = await supabase.auth.signOut()
+    if (error) {
+      console.error('Error cerrando sesión:', error.message)
+    } else {
+      console.log('Sesión cerrada correctamente')
+      router.push('/login')
+    }
+  }
+
   return (
     <main className="flex min-h-screen flex-col items-center p-4 md:p-24 bg-gray-50">
+      <div>Correo:{user?.email}</div>
+      <button onClick={LogOut} className="bg-red-500 text-white px-4 py-2 rounded-md mb-4">
+        Logout
+      </button>
+      {user?.avatar_url && <img src={`${user.avatar_url}`} alt="" width={100} />}
+
       <div className="w-full max-w-3xl mx-auto text-center">
         <h1 className="text-3xl font-bold mb-8">Buscador de Productos</h1>
 

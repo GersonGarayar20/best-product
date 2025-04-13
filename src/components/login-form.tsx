@@ -27,6 +27,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import LoginConGoogle from "@/app/login/auth-login";
 
 // Definir el esquema de validación con Zod
 const loginSchema = z.object({
@@ -212,7 +213,7 @@ export default function LoginForm() {
             </div>
           </div>
 
-          <Button
+          {/* <Button
             type="button"
             variant="outline"
             className="w-full"
@@ -220,7 +221,10 @@ export default function LoginForm() {
             disabled={isLoading}
           >
             Google
-          </Button>
+          </Button> */}
+
+          <LoginConGoogle />
+
         </div>
       </CardContent>
       <CardFooter className="flex justify-center">
