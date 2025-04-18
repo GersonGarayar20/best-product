@@ -13,8 +13,6 @@ const celularSchema = z.object({
 });
 
 export async function GET(req: Request) {
-
-
   const result = await generateText({
     model: openai('gpt-4o-mini'),
     tools: {
